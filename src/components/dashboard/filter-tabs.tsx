@@ -1,6 +1,5 @@
+import { TicketStatus, type TicketFilters } from "@/types";
 import type { Dispatch, SetStateAction } from "react";
-import { TicketStatus } from "@/types/enums";
-import type { TicketFilters } from "@/types";
 
 const TICKET_STATUS_FILTERS = [
   {
@@ -51,7 +50,7 @@ export default function FilterTabs({
             }
           `}
         >
-          {status.value}
+          {status.label}
         </button>
       ))}
     </div>

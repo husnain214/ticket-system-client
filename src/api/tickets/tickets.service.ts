@@ -1,6 +1,6 @@
-import { config } from "../config";
+import { config } from "@/lib/config";
 
-async function fetchTickets(category: string | null, status: string | null) {
+async function fetchTickets(status: string | null, category: string | null) {
   const queryParams = new URLSearchParams({
     ...(category && { category }),
     ...(status && { status }),
