@@ -1,2 +1,69 @@
-@import 'tailwindcss';
-@import './fonts.css';
+@import "tailwindcss";
+@import "./fonts.css";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-main: #0a0d12;
+
+  --color-canvas: #0a0d12;
+  --color-subtle: var(--color-gray-900);
+  --color-muted: var(--color-gray-800);
+
+  --color-success: var(--color-emerald-500);
+  --color-warning: var(--color-amber-500);
+  --color-info: var(--color-blue-500);
+  --color-active: var(--color-violet-500);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-gray-50);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  .slide-in {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  .pulse-dot {
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
