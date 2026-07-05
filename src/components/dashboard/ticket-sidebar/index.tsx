@@ -14,7 +14,17 @@ export function TicketSidebar({ ticketId, onClose }: TicketSidebarProps) {
     <Sidebar
       open={!!ticketId}
       onClose={onClose}
-      title={ticketId ? <TicketSidebarTitle ticketId={ticketId} /> : null}
+      title={
+        ticketId ? (
+          <Suspense
+            fallback={
+              <div className="h-8 w-48 bg-gray-800 rounded animate-pulse" />
+            }
+          >
+            <TicketSidebarTitle ticketId={ticketId} />
+          </Suspense>
+        ) : null
+      }
     >
       {ticketId && (
         <Suspense fallback={<TicketSidebarSkeleton />}>

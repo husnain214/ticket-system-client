@@ -1,12 +1,14 @@
 import { Suspense, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-import Metrics from "@/components/dashboard/metrics";
-import FilterTabs from "@/components/dashboard/filter-tabs";
-
 import type { TicketFilters } from "@/types";
-import { TicketGridSkeleton } from "@/components/dashboard/tickets-grid-skeleton";
-import { TicketGrid } from "@/components/dashboard/tickets-grid";
+import {
+  Filters,
+  Metrics,
+  TicketsGrid,
+  TicketsGridSkeleton,
+  TicketSidebar,
+} from "@/components/dashboard";
 
 export const Route = createFileRoute("/_app/")({
   component: Dashboard,
@@ -17,17 +19,23 @@ function Dashboard() {
     category: null,
     status: null,
   });
+  const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
 
   return (
-    <div className="px-8 pt-8">
+    <div className="px-4 sm:px-8 py-6 sm:py-8">
       <Metrics />
-      <FilterTabs
-        activeFilter={activeFilters}
-        onFilterChange={setActiveFilters}
-      />
-      <Suspense fallback={<TicketGridSkeleton />}>
-        <TicketGrid filters={activeFilters} />
+      <Filters activeFilter={activeFilters} onFilterChange={setActiveFilters} />
+      <Suspense fallback={<TicketsGridSkeleton />}>
+        <TicketsGrid
+          filters={activeFilters}
+          onTicketClick={setSelectedTicketId}
+        />
       </Suspense>
+
+      <TicketSidebar
+        ticketId={selectedTicketId}
+        onClose={() => setSelectedTicketId(null)}
+      />
     </div>
   );
 }
