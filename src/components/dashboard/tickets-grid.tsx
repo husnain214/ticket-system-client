@@ -1,16 +1,19 @@
-import { useTickets } from "@/api/tickets/tickets.queries";
+import { useTickets } from "@/api/queries";
+
+import { TicketsEmpty } from "./tickets-empty";
 import type { Ticket, TicketFilters } from "@/types";
-import TicketCard from "./ticket-card";
+import { TicketCard } from "./ticket-card";
 
 interface TicketGridProps {
   filters: TicketFilters;
+  onTicketClick: (ticketId: string) => void;
 }
 
-export function TicketGrid({ filters }: TicketGridProps) {
+export function TicketsGrid({ filters, onTicketClick }: TicketGridProps) {
   const { data: tickets } = useTickets(filters.status, filters.category);
 
   if (tickets.length === 0) {
-    return "No tickets available";
+    return <TicketsEmpty filters={filters} />;
   }
 
   return (
@@ -19,7 +22,7 @@ export function TicketGrid({ filters }: TicketGridProps) {
         <TicketCard
           key={ticket.id}
           ticket={ticket}
-          onClick={() => {}}
+          onClick={onTicketClick}
           isNew={false}
         />
       ))}

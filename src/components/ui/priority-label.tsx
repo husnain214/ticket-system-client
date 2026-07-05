@@ -1,3 +1,6 @@
+import { cn } from "@/lib/utils";
+import type { TicketPriority } from "@/types";
+
 const variants = {
   low: "text-gray-500",
   medium: "text-blue-400",
@@ -5,13 +8,17 @@ const variants = {
   critical: "text-red-500",
 };
 
-export function PriorityLabel({ priority }) {
+interface PriorityLabel {
+  priority: TicketPriority;
+}
+
+export function PriorityLabel({ priority }: PriorityLabel) {
   return (
     <span
-      className={`
-        text-xs font-mono font-medium uppercase tracking-wider
-        ${variants[priority] ?? variants.low}
-      `}
+      className={cn(
+        "text-xs font-mono font-medium uppercase tracking-wider",
+        variants[priority],
+      )}
     >
       {priority}
     </span>
