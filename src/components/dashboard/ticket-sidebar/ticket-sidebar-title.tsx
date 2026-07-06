@@ -1,4 +1,4 @@
-import { useTicket } from "@/api/queries";
+import { useTicket } from "@/api/ticket.queries";
 import { PriorityLabel } from "@/components/ui";
 
 export function TicketSidebarTitle({ ticketId }: { ticketId: string }) {

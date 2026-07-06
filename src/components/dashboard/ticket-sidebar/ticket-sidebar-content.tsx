@@ -1,4 +1,4 @@
-import { useTicket } from "@/api/queries";
+import { useTicket } from "@/api/ticket.queries";
 import { Badge } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
 import type { AgentTask } from "@/types";

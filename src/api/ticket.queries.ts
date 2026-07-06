@@ -1,5 +1,9 @@
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { fetchAnalytics, fetchTickets, fetchTicketById } from "./services";
+import {
+  fetchAnalytics,
+  fetchTicketById,
+  fetchTickets,
+} from "./ticket.service";
 
 export function useTickets(status: string | null, category: string | null) {
   return useSuspenseQuery({

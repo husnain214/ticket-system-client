@@ -1,4 +1,4 @@
-import { useTickets } from "@/api/queries";
+import { useTickets } from "@/api/ticket.queries";
 
 import { TicketsEmpty } from "./tickets-empty";
 import type { Ticket, TicketFilters } from "@/types";
