@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Mail, Lock } from "lucide-react";
 import { AuthCard, Button, Input } from "@/components/ui";
-import { loginFormSchema, type LoginFormtype } from "@/lib/schemas";
-import { loginMutation } from "@/api/auth/auth.mutations";
+import { loginFormSchema, type LoginFormtype } from "@/lib/zod/auth.schemas";
+import { useLogin } from "@/api/auth/auth.mutations";
 
 export const Route = createFileRoute("/_auth/login")({
   component: Login,
@@ -20,7 +20,7 @@ function Login() {
     },
   });
 
-  const mutation = loginMutation();
+  const mutation = useLogin();
 
   function onSubmit(values: LoginFormtype) {
     mutation.mutate(values);

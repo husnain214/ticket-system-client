@@ -7,7 +7,7 @@ import { AuthCard, Button, Input } from "@/components/ui";
 import {
   verificationFormSchema,
   type VerificationFormtype,
-} from "@/lib/schemas";
+} from "@/lib/zod/auth.schemas";
 import { Mail } from "lucide-react";
 import { useVerifyToken } from "@/api/auth/auth.queries";
 import { useRequestVerify } from "@/api/auth/auth.mutations";

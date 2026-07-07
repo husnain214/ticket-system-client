@@ -10,7 +10,11 @@ import path from "path";
 const config = defineConfig({
   resolve: {
     tsconfigPaths: true,
-    alias: { "@": path.resolve(__dirname, "./src") },
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "react-dom$": "react-dom/profiling",
+      "scheduler/tracing": "scheduler/tracing-profiling",
+    },
   },
   plugins: [
     devtools(),

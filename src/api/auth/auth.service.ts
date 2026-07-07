@@ -1,6 +1,6 @@
 import axios from "axios";
 import { api } from "@/lib/axios";
-import type { LoginFormtype, SignupFormtype } from "@/lib/schemas";
+import type { LoginFormtype, SignupFormtype } from "@/lib/zod/auth.schemas";
 
 async function signup(formData: SignupFormtype) {
   try {

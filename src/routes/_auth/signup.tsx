@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Lock, Mail, ShieldCheck } from "lucide-react";
 import { AuthCard, Button, Input } from "@/components/ui";
-import { signupFormSchema, type SignupFormtype } from "@/lib/schemas";
-import { signupMutation } from "@/api/auth/auth.mutations";
+import { signupFormSchema, type SignupFormtype } from "@/lib/zod/auth.schemas";
+import { useSignup } from "@/api/auth/auth.mutations";
 
 export const Route = createFileRoute("/_auth/signup")({
   component: Signup,
@@ -21,7 +21,7 @@ function Signup() {
     },
   });
 
-  const mutation = signupMutation();
+  const mutation = useSignup();
 
   function onSubmit(values: SignupFormtype) {
     mutation.mutate(values);

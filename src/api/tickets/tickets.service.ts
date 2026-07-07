@@ -1,4 +1,5 @@
 import { api } from "@/lib/axios";
+import type { CreateTicketType } from "@/lib/zod/tickets.schemas";
 
 async function fetchTickets(status: string | null, category: string | null) {
   try {
@@ -33,4 +34,13 @@ async function fetchAnalytics() {
   }
 }
 
-export { fetchTickets, fetchAnalytics, fetchTicketById };
+async function createTicket(formData: CreateTicketType) {
+  try {
+    const response = await api.post("/tickets", formData);
+    return response.data;
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
+}
+
+export { fetchTickets, fetchAnalytics, fetchTicketById, createTicket };

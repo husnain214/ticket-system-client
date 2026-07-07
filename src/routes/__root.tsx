@@ -21,7 +21,7 @@ function RootComponent() {
   return (
     <>
       <Outlet />
-      <Toaster richColors position="bottom-right" />
+      <Toaster richColors position="top-right" />
       <TanStackDevtools
         config={{
           position: "bottom-right",

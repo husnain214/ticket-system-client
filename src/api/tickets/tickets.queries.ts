@@ -3,7 +3,7 @@ import {
   fetchAnalytics,
   fetchTicketById,
   fetchTickets,
-} from "./ticket.service";
+} from "./tickets.service";
 
 export function useTickets(status: string | null, category: string | null) {
   return useSuspenseQuery({
