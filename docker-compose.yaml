@@ -1,0 +1,16 @@
+services:
+  dashboard:
+    container_name: ticket-dashboard
+    networks:
+      - ticket-network
+    build:
+      context: .
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+        - VITE_WS_URL=${VITE_WS_URL}
+    ports:
+      - "3000:80"
+
+networks:
+  ticket-network:
+    name: ticket-network
