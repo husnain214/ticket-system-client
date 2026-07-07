@@ -21,5 +21,20 @@ export const loginFormSchema = z.object({
     .min(8, { error: "Password must be at least 8 characters long!" }),
 });
 
+export const verificationFormSchema = z.object({
+  email: z.email({ error: "Please enter a valid email address!" }),
+});
+
+export const resetPasswordFormSchema = z.object({
+  oldPassword: z
+    .string()
+    .min(8, { error: "Password must be at least 8 characters long!" }),
+  newPassword: z
+    .string()
+    .min(8, { error: "Password must be at least 8 characters long!" }),
+});
+
 export type SignupFormtype = z.infer<typeof signupFormSchema>;
 export type LoginFormtype = z.infer<typeof loginFormSchema>;
+export type VerificationFormtype = z.infer<typeof verificationFormSchema>;
+export type ResetPasswordFormType = z.infer<typeof resetPasswordFormSchema>;

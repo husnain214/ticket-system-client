@@ -1,4 +1,4 @@
-import { useAnalytics } from "@/api/ticket.queries";
+import { useAnalytics } from "@/api/tickets/ticket.queries";
 import { cn } from "@/lib/utils";
 import { ErrorMessage } from "../errors";
 

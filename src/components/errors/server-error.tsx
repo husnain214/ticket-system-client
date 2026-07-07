@@ -17,7 +17,7 @@ export function ServerError({ error, reset }: ServerErrorProps) {
   };
 
   return (
-    <div className="min-h-screen bg-canvas flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen  flex flex-col items-center justify-center px-6 text-center">
       <div className="w-12 h-12 bg-red-500/8 border border-red-500/20 rounded-xl flex items-center justify-center mb-6">
         <AlertTriangle className="w-5 h-5 text-red-400" strokeWidth={1.5} />
       </div>

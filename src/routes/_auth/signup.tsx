@@ -1,20 +1,17 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 import { Lock, Mail, ShieldCheck } from "lucide-react";
 import { AuthCard, Button, Input } from "@/components/ui";
-import { signup } from "@/api/auth.service";
 import { signupFormSchema, type SignupFormtype } from "@/lib/schemas";
+import { signupMutation } from "@/api/auth/auth.mutations";
 
 export const Route = createFileRoute("/_auth/signup")({
   component: Signup,
 });
 
 function Signup() {
-  const navigate = useNavigate();
   const form = useForm<SignupFormtype>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -24,16 +21,7 @@ function Signup() {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      toast.success("Check your inbox!");
-      navigate({ to: "/login" });
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+  const mutation = signupMutation();
 
   function onSubmit(values: SignupFormtype) {
     mutation.mutate(values);

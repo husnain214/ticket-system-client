@@ -5,7 +5,7 @@ export function NotFound() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-canvas flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
       <div className="w-12 h-12 bg-subtle border border-muted rounded-xl flex items-center justify-center mb-6">
         <FileQuestion className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
       </div>

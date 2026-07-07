@@ -19,7 +19,7 @@
 
 @layer base {
   body {
-    background-color: var(--color-bg);
+    background-color: var(--color-canvas);
     color: var(--color-gray-50);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
