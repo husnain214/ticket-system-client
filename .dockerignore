@@ -4,5 +4,9 @@ dist
 .git
 .gitignore
 README.md
-.vscode 
+.vscode
 .tanstack
+*.log
+npm-debug.log*
+.DS_Store
+coverage

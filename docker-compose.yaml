@@ -1,6 +1,7 @@
 services:
   dashboard:
     container_name: ticket-dashboard
+    restart: unless-stopped
     networks:
       - ticket-network
     build:
@@ -14,3 +15,4 @@ services:
 networks:
   ticket-network:
     name: ticket-network
+    external: true
