@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getCurrentUser,
   login,
@@ -31,8 +31,8 @@ export function useLogin() {
   return useMutation({
     mutationFn: async (formData: LoginFormtype) => {
       const { access_token } = await login(formData);
-      localStorage.setItem("access_token", access_token);
 
+      localStorage.setItem("access_token", access_token);
       const user = await getCurrentUser();
 
       return { user };
@@ -68,12 +68,14 @@ export function useRequestVerify() {
 
 export function useLogout() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
       toast.success("You have been logged out");
       localStorage.removeItem("access_token");
+      queryClient.invalidateQueries();
       navigate({ to: "/login" });
     },
     onError: () => {

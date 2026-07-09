@@ -1,201 +1,178 @@
-Welcome to your new TanStack Start app!
+# Ticket Resolution Engine — Dashboard
 
-# Getting Started
+Real-time operations dashboard for monitoring AI-automated ticket resolution. Connects to the FastAPI backend via REST and WebSocket for live visibility into agent activity, ticket status, and escalations.
 
-To run this application:
+**Backend repo:** [ticket-system-api](https://github.com/yourname/ticket-system-api) · **Live:** https://your-cloudfront-url.com
+
+---
+
+## Features
+
+- Live ticket feed with instant status updates via WebSocket — no polling
+- Agent resolution details, escalation reasons, and full event timeline per ticket
+- Metrics bar showing total tickets, resolution rate, escalations, and queue depth
+- Filter tickets by status and category
+- Role-based UI — admin controls hidden from operators
+- Persistent JWT authentication with session rehydration on refresh
+- Suspense-driven loading with skeleton screens
+- Toast notifications when agents resolve or escalate tickets
+- Auto-reconnecting WebSocket with live connection indicator
+
+---
+
+## Stack
+
+React · TypeScript · TanStack Router · TanStack Query · Tailwind CSS v4 · React Hook Form · Zod · Lucide React · Sonner · Docker · Nginx · GitHub Actions · AWS S3 · AWS CloudFront
+
+---
+
+## Local setup
+
+### Prerequisites
+
+- Node 20+
+- Backend API running at `http://localhost:8000`
+
+### 1. Clone and install
 
 ```bash
+git clone https://github.com/yourname/ticket-system-dashboard
+cd ticket-system-dashboard
 npm install
+```
+
+### 2. Configure environment
+
+```env
+VITE_API_URL=http://localhost:8000
+VITE_WS_URL=ws://localhost:8000
+```
+
+### 3. Start the dev server
+
+```bash
 npm run dev
 ```
 
-# Building For Production
+Opens at `http://localhost:5173`
 
-To build this application for production:
+---
 
-```bash
-npm run build
-```
-
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+## Docker
 
 ```bash
-npm run test
+# build with env vars
+docker build \
+  --build-arg VITE_API_URL=http://localhost:8000 \
+  --build-arg VITE_WS_URL=ws://localhost:8000 \
+  -t ticket-dashboard .
+
+# run
+docker run -p 3000:80 ticket-dashboard
 ```
 
-## Styling
+---
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## Project structure
 
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
-
-## Linting & Formatting
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
-
-```bash
-npm run lint
-npm run format
-npm run check
+```
+src/
+├── api/
+│   ├── auth/
+│   │   ├── auth.service.ts       # login, register, forgot/reset password
+│   │   └── auth.queries.ts       # useLogin, useLogout, useCurrentUser
+│   ├── tickets/
+│   │   ├── tickets.service.ts    # fetch functions
+│   │   ├── tickets.queries.ts    # useTickets, useTicket
+│   │   └── tickets.mutations.ts  # useCreateTicket
+│   └── users/
+│       └── users.service.ts      # getCurrentUser
+├── components/
+│   ├── ui/                       # Badge, Button, Input, Sidebar, AuthCard
+│   ├── dashboard/                # Metrics, FilterTabs, TicketCard, TicketSidebar
+│   └── errors/                   # ServerError, NotFound
+├── hooks/
+│   └── useWebSocket.ts
+├── lib/
+│   ├── api.ts                    # apiFetch wrapper
+│   ├── config.ts                 # env vars
+│   └── constants.ts              # TOKEN_KEY
+├── providers/
+│   ├── auth-provider.tsx         # auth guard + user initialization
+│   └── websocket-provider.tsx    # WebSocket connection + cache updates
+├── routes/
+│   ├── __root.tsx
+│   ├── _app/
+│   │   ├── route.tsx             # authenticated layout + header
+│   │   └── index.tsx             # dashboard page
+│   └── _auth/
+│       ├── login.tsx
+│       ├── signup.tsx
+│       ├── forgot-password.tsx
+│       ├── verify-email.tsx
+│       └── reset-password.tsx
+├── types/
+│   ├── enums.ts
+│   └── models.ts
+└── stores/
+    └── auth.store.ts
 ```
 
-## Routing
+---
 
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+## Route structure
 
-### Adding A Route
+| URL                         | Page               | Auth required |
+| --------------------------- | ------------------ | ------------- |
+| `/`                         | Dashboard          | Yes           |
+| `/login`                    | Login              | No            |
+| `/signup`                   | Sign up            | No            |
+| `/forgot-password`          | Forgot password    | No            |
+| `/verify-email?token=...`   | Email verification | No            |
+| `/reset-password?token=...` | Reset password     | No            |
 
-To add a new route to your application just add a new file in the `./src/routes` directory.
+---
 
-TanStack will automatically generate the content of the route file for you.
+## Authentication flow
 
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
+```
+App loads
+  → check localStorage for token
+  → token exists → fetch /users/me → render dashboard
+  → token missing → redirect to /login
+  → token expired → clear token → redirect to /login
 ```
 
-Then anywhere in your JSX you can use it like so:
+---
 
-```tsx
-<Link to="/about">About</Link>
+## Real-time updates
+
+WebSocket connects on authenticated layout mount. When an agent resolves or escalates a ticket:
+
+1. Ticket status updates instantly in the dashboard grid via React Query cache patch
+2. Toast notification appears with agent type and resolution preview
+3. Individual ticket query invalidated so detail sidebar shows fresh data
+
+---
+
+## CI/CD
+
+GitHub Actions pipeline on push to `main`:
+
+```
+test (tsc + eslint + build check) → build → sync to S3 → invalidate CloudFront
 ```
 
-This will create a link that will navigate to the `/about` route.
+Deployments are blocked if type checks or linting fail.
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+---
 
-### Using A Layout
+## Deployment
 
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
+Frontend is built as a static React app and served globally via AWS CloudFront with S3 as the origin.
 
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "My App" },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-});
+```
+GitHub → S3 (static files) → CloudFront (CDN + HTTPS)
 ```
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from "@tanstack/react-start";
-
-const getServerTime = createServerFn({
-  method: "GET",
-}).handler(async () => {
-  return new Date().toISOString();
-});
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    getServerTime().then(setTime);
-  }, []);
-
-  return <div>Server time: {time}</div>;
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-import { json } from "@tanstack/react-start";
-
-export const Route = createFileRoute("/api/hello")({
-  server: {
-    handlers: {
-      GET: () => json({ message: "Hello, World!" }),
-    },
-  },
-});
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/people")({
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json();
-  },
-  component: PeopleComponent,
-});
-
-function PeopleComponent() {
-  const data = Route.useLoaderData();
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  );
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+`index.html` is served with `no-cache` headers so users always get the latest deployment. All other assets are cached for 1 year with immutable headers.
