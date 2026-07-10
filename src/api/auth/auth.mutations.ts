@@ -75,8 +75,8 @@ export function useLogout() {
     onSuccess: () => {
       toast.success("You have been logged out");
       localStorage.removeItem("access_token");
-      queryClient.invalidateQueries();
       navigate({ to: "/login" });
+      queryClient.invalidateQueries();
     },
     onError: () => {
       toast.error("Please try again");
