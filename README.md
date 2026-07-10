@@ -2,7 +2,7 @@
 
 Real-time operations dashboard for monitoring AI-automated ticket resolution. Connects to the FastAPI backend via REST and WebSocket for live visibility into agent activity, ticket status, and escalations.
 
-**Backend repo:** [ticket-system-api](https://github.com/yourname/ticket-system-api) · **Live:** https://your-cloudfront-url.com
+**Backend repo:** [ticket-system-api](https://github.com/husnain214/ticket-system-api) · **Live:** http://d16ys3p7ql9k5b.cloudfront.net/
 
 ---
 
@@ -36,8 +36,8 @@ React · TypeScript · TanStack Router · TanStack Query · Tailwind CSS v4 · R
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/yourname/ticket-system-dashboard
-cd ticket-system-dashboard
+git clone https://github.com/husnain214/ticket-system-client
+cd ticket-system-client
 npm install
 ```
 
@@ -54,7 +54,7 @@ VITE_WS_URL=ws://localhost:8000
 npm run dev
 ```
 
-Opens at `http://localhost:5173`
+Opens at `http://localhost:3000`
 
 ---
 
@@ -122,14 +122,13 @@ src/
 
 ## Route structure
 
-| URL                         | Page               | Auth required |
-| --------------------------- | ------------------ | ------------- |
-| `/`                         | Dashboard          | Yes           |
-| `/login`                    | Login              | No            |
-| `/signup`                   | Sign up            | No            |
-| `/forgot-password`          | Forgot password    | No            |
-| `/verify-email?token=...`   | Email verification | No            |
-| `/reset-password?token=...` | Reset password     | No            |
+| URL                       | Page               | Auth required |
+| ------------------------- | ------------------ | ------------- |
+| `/`                       | Dashboard          | Yes           |
+| `/login`                  | Login              | No            |
+| `/signup`                 | Sign up            | No            |
+| `/forgot-password`        | Forgot password    | No            |
+| `/verify-token?token=...` | Email verification | No            |
 
 ---
 
