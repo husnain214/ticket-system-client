@@ -6,13 +6,13 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(
-  (config) => {
+  (request) => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      request.headers.Authorization = `Bearer ${token}`;
     }
 
-    return config;
+    return request;
   },
   (error) => {
     return Promise.reject(error);
@@ -20,13 +20,13 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (config) => {
-    if (config.status === 401) {
+  (response) => {
+    if (response.status === 401) {
       localStorage.removeItem("access_token");
       window.location.href = "/login";
     }
 
-    return config;
+    return response;
   },
   (error) => {
     return Promise.reject(error);

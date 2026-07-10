@@ -28,7 +28,7 @@ export function CategorySelect({
         onChange={(e) =>
           onFilterChange((prev) => ({
             ...prev,
-            category: (e.target.value as TicketCategory) || null,
+            category: e.target.value as TicketCategory,
           }))
         }
         className="appearance-none bg-subtle border border-muted rounded-md pl-3 pr-8 py-1.5 text-xs font-mono text-gray-400 cursor-pointer hover:border-gray-600 hover:text-gray-300 focus:outline-none focus:border-indigo-500/50 transition-colors"

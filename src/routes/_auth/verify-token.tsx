@@ -1,13 +1,12 @@
+import type { VerificationFormtype } from "@/lib/zod/auth.schemas";
+
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthCard, Button, Input } from "@/components/ui";
-import {
-  verificationFormSchema,
-  type VerificationFormtype,
-} from "@/lib/zod/auth.schemas";
+import { verificationFormSchema } from "@/lib/zod/auth.schemas";
 import { Mail } from "lucide-react";
 import { useVerifyToken } from "@/api/auth/auth.queries";
 import { useRequestVerify } from "@/api/auth/auth.mutations";
@@ -47,7 +46,7 @@ function RouteComponent() {
   }
 
   if (isError) {
-    toast.error(error?.message);
+    toast.error(error.message);
 
     return <VerifyEmailForm />;
   }

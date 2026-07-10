@@ -1,11 +1,10 @@
+import type { CreateTicketType } from "@/lib/zod/tickets.schemas";
+
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X, Loader2 } from "lucide-react";
-import {
-  createTicketSchema,
-  type CreateTicketType,
-} from "@/lib/zod/tickets.schemas";
+import { createTicketSchema } from "@/lib/zod/tickets.schemas";
 import { TicketCategory, TicketPriority } from "@/types/enums";
 import { Input } from "@/components/ui/input";
 import { useCreateTicket } from "@/api/tickets/tickets.mutations";

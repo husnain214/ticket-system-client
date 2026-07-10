@@ -1,10 +1,12 @@
+import type { LoginFormtype } from "@/lib/zod/auth.schemas";
+
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Mail, Lock } from "lucide-react";
 import { AuthCard, Button, Input } from "@/components/ui";
-import { loginFormSchema, type LoginFormtype } from "@/lib/zod/auth.schemas";
+import { loginFormSchema } from "@/lib/zod/auth.schemas";
 import { useLogin } from "@/api/auth/auth.mutations";
 
 export const Route = createFileRoute("/_auth/login")({

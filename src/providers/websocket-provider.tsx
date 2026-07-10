@@ -37,14 +37,14 @@ export default function WebSocketProvider({
 
       if (data.status === "resolved") {
         toast.success(`Ticket resolved by ${data.agent_type}`, {
-          description: data.result?.slice(0, 80) + "...",
+          description: data.result.slice(0, 80) + "...",
           duration: 5000,
         });
       }
 
       if (data.status === "escalated") {
         toast.warning(`Ticket escalated`, {
-          description: data.result?.slice(0, 80) + "...",
+          description: data.result.slice(0, 80) + "...",
           duration: 6000,
         });
       }

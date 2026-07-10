@@ -1,5 +1,7 @@
+import type { TicketEvent } from "@/types";
+
 import { cn, formatDate } from "@/lib/utils";
-import { EventType, type TicketEvent } from "@/types";
+import { EventType } from "@/types";
 import { Clock } from "lucide-react";
 
 const EVENT_DOT: Record<EventType, string> = {
@@ -22,7 +24,7 @@ export function EventTimeline({ events }: { events: TicketEvent[] }) {
             <div
               className={cn(
                 "absolute left-0 top-1 w-3.5 h-3.5 rounded-full shrink-0 border-2 border-subtle",
-                EVENT_DOT[event.event_type] ?? "bg-gray-600",
+                EVENT_DOT[event.event_type],
               )}
             />
             <div className="flex-1 min-w-0">
