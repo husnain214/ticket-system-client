@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect } from "react";
+import { createContext, useCallback, useContext } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { toast } from "sonner";
@@ -53,10 +53,6 @@ export default function WebSocketProvider({
   );
 
   const { connected } = useWebSocket(handleMessage);
-
-  useEffect(() => {
-    console.log("connected", connected);
-  }, [connected]);
 
   return (
     <WebSocketContext.Provider value={{ connected }}>
