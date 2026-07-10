@@ -40,7 +40,7 @@ export function Header() {
               <div
                 className={cn(
                   "h-1.5 w-1.5 rounded-full transition-colors duration-300",
-                  connected ? "bg-success pulse-dot" : "bg-gray-600",
+                  connected ? "bg-success animate-pulse" : "bg-gray-600",
                 )}
               />
 
